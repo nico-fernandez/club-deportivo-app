@@ -1,77 +1,81 @@
 # S.I.S. – Sistema Integrado de Socios
 
-## Documentación del Proyecto
+## Desarrollo de Software – TP Final
 
-Este proyecto fue desarrollado como resolución del **Trabajo Práctico Final** de la asignatura **Desarrollo de Software**.
+### Desarrollo de Sistema de Administración de Socios para Club Deportivo
 
-**Grupo 8**
+**Alumnos:**
 - Aita Jerónimo
-- Fernández Nicolás
 - Mactavish Tomás
+- Fernández Nicolás
 - Rugiero Fausto
 
-**Profesores**
+**Docentes:**
 - Badino Marcelo
-- Leibovski Ariel
+- Leibouski Ariel
 - Viera Sergio
-
-**Universidad Tecnológica Nacional – Facultad Regional Delta**
 
 ---
 
-## Proyecto
+## Documentación del Proyecto
 
-**Nombre:** Sistema Integrado de Socios (S.I.S.)  
-**Objetivo:** Desarrollar un sistema que permita la gestión de socios y eventos de un club deportivo.
+### Objetivo del proyecto
+Gestionar socios y actividades de un club deportivo mediante una plataforma web segura y escalable.
 
 ---
 
 ## Alcance
-
-- El sistema será **distribuido**, con servidor y base de datos desplegados localmente y posibilidad de migrar a la nube.
-- Será controlado por un **administrador** dentro del club.
-- Interfaz web accesible vía navegador en computadoras de escritorio.
-- Interfaz específica para **socios** y otra para **miembros de staff**.
+- Arquitectura **MVC**.
+- Servidor desplegado localmente con posibilidad de migración a la nube.
+- Gestión por parte de un **administrador** con interfaz web para escritorio.
+- Interfaces web específicas para **socios** y **miembros del staff**.
+- Autenticación JWT y gestión de perfiles de usuario.
 
 ---
 
-## Análisis
+## Actores
+- Administrador
+- Socio
+- Miembro de Staff
 
-### Funcionamiento del Sistema
+---
 
-#### Administración
-El usuario **administrador** del sistema posee acceso completo y puede:
+## Funcionamiento
 
-##### Registro y acceso de socios
-1. El interesado se presenta en el club y completa un formulario de registro.
-2. El administrador crea su cuenta en el sistema.
-3. Una vez registrado, el socio puede acceder remotamente con sus credenciales.
-4. El socio puede:
-   - Ver y modificar el listado de socios y sus datos personales, historiales y pagos realizados.
-   - Ver y modificar el listado de miembros de staff y pagos efectuados a ellos.
-   - Ver y modificar las actividades disponibles en el club (clases, eventos, servicios).
-   - Configurar parámetros del sistema (valor base de cuota, porcentaje de retención).
-   - Ver y modificar su información personal y credenciales.
+### Administración del sistema
+El administrador dispone de acceso completo al sistema y puede:
+- Visualizar y gestionar todas las actividades del club.
+- Acceder al listado completo de socios y sus historiales.
+- Consultar información detallada de todos los miembros del staff.
+- Revisar todos los pagos realizados por socios.
+- Controlar los pagos efectuados a miembros del staff.
+- Configurar parámetros generales (cuotas base, porcentajes, períodos de pago).
 
-El pago de la cuota puede realizarse:
-- Por transferencia bancaria.
-- En efectivo en el club.
+### Registro y acceso de socios
+Para registrarse:
+1. El interesado acude al club y completa un formulario de registro.
+2. El administrador crea la cuenta en el sistema.
+3. El socio accede con credenciales.
 
-El administrador es responsable de **verificar y acreditar** el pago de la cuota mensual.
+El socio puede:
+- Consultar y actualizar información personal.
+- Revisar historial de actividades y pagos.
+- Gestionar inscripciones a actividades, eventos y servicios.
+- Ver valor actualizado de su cuota mensual (cuota base + actividades).
+- Comprobar estado de pagos (al día o atrasado).
+- Pagar presencialmente, por transferencia bancaria o subir comprobante.
+- El administrador verifica y valida todos los pagos.
 
-##### Registro y acceso de miembros de staff
-- "Miembro de staff": usuario que dirige una actividad en el club (ej. profesor de fútbol, director de festival).
-- Para registrarse, debe presentarse en el club, completar un formulario con la actividad a dirigir y presentar su CV.
-- El administrador registra los pagos efectuados a miembros de staff.
+### Registro y acceso de miembros del staff
+Para registrarse:
+1. El interesado completa un formulario y presenta su CV.
+2. El administrador registra al nuevo miembro y publica la actividad correspondiente.
 
 El miembro de staff puede:
-- Ver su historial de actividades y pagos.
-- Gestionar sus inscripciones a actividades.
-- Ver el valor de su cuota mensual (valor base + cargos por actividades).
-- Subir comprobante de pago de cuota mensual.
-- Ver listados de socios inscriptos a sus actividades.
-- Ver el valor de compensación económica mensual asociada a cada actividad (según inscriptos y porcentaje de retención).
-- Ver historial de compensaciones recibidas.
+- Ver socios inscriptos en sus actividades.
+- Consultar compensación económica mensual (según inscriptos y porcentaje de retención).
+- Mantener un histórico de compensaciones recibidas.
+- El administrador registra los pagos correspondientes.
 
 ---
 
@@ -79,64 +83,112 @@ El miembro de staff puede:
 
 ### Requisitos Funcionales
 
-#### Administrador
-1. **RF1:** Registrar nuevo socio o miembro de staff con datos básicos (nombre, apellido, DNI, correo, teléfono).
-2. **RF2:** Modificar información de socio o miembro de staff.
-3. **RF3:** Dar de baja socios o miembros de staff (manteniendo historial).
-4. **RF4:** Consultar historial de un socio (datos, pagos, actividades, valor de cuota, estado de pago).
-5. **RF5:** Registrar pago de cuota mensual de un socio.
-6. **RF6:** Consultar estado de pago de cuota de un socio.
-7. **RF7:** Publicar actividad (descripción, cargo por inscripción, fechas/horarios, miembro de staff a cargo).
-8. **RF8:** Modificar actividad publicada y notificar a inscriptos.
-9. **RF9:** Archivar actividad finalizada.
-10. **RF10:** Validar comprobante de pago subido por un socio.
-11. **RF11:** Registrar pago efectuado a un miembro de staff.
+**Administrador**
+1. RF1: Registrar nuevos socios o miembros de staff (nombre, apellido, DNI, correo, teléfono).
+2. RF2: Modificar información.
+3. RF3: Dar de baja manteniendo historial.
+4. RF4: Consultar historial de socio.
+5. RF5: Registrar pago de cuota.
+6. RF6: Consultar estado de pago de cuota.
+7. RF7: Publicar actividades.
+8. RF8: Modificar actividad y notificar inscriptos.
+9. RF9: Archivar clase/evento finalizado.
+10. RF10: Validar comprobantes de pago.
+11. RF11: Registrar pagos a miembros del staff.
 
-#### Socio
-12. **RF12:** Consultar su historial.
-13. **RF13:** Modificar su información personal.
-14. **RF14:** Subir comprobante de pago.
-15. **RF15:** Inscribirse en actividades disponibles.
+**Socio**
+12. RF12: Consultar historial personal.
+13. RF13: Modificar información personal.
+14. RF14: Subir comprobante de pago.
+15. RF15: Inscribirse a actividades.
 
-#### Miembro de Staff
-16. **RF16:** Consultar listado de socios inscriptos a sus actividades.
-17. **RF17:** Consultar monto a cobrar por eventos a su cargo.
-18. **RF18:** Consultar actividades a su cargo (iniciadas, finalizadas, archivadas o eliminadas).
-19. **RF19:** Consultar historial de compensaciones.
+**Miembro de Staff**
+16. RF16: Consultar listado de socios inscriptos.
+17. RF17: Consultar monto a cobrar.
+18. RF18: Consultar actividades (iniciadas, finalizadas, archivadas o eliminadas).
+19. RF19: Consultar historial de compensaciones.
 
-#### Sistema
-20. **RF20:** Generar recordatorios automáticos de pago a socios.
+**Sistema**
+20. RF20: Generar recordatorios de pago a socios (email).
 
 ---
 
 ### Requisitos No Funcionales
 
 **Rendimiento**
-- **RNF1:** Respuesta < 2s para 95% de solicitudes en carga normal.
-- **RNF2:** Respuesta < 30s para 100% de solicitudes en carga alta (subida/bajada de archivos).
-- **RNF3:** Consultas indexadas y uso de formato WebP en imágenes.
+- RNF1: Respuesta <2s para 95% de solicitudes bajo carga normal.
+- RNF2: Consultas indexadas y formato WebP para imágenes.
 
-**Disponibilidad**
-- **RNF4:** Uptime 99.9% (máx. 8.76 horas inactivo/año).
-- **RNF5:** Backups diarios de base de datos.
+**Alta Disponibilidad**
+- RNF3: Uptime 99.9% (máx. 8.76h inactividad/año).
+- RNF4: Backups diarios.
 
 **Seguridad**
-- **RNF6:** Autenticación JWT y perfiles de usuario.
-- **RNF7:** Comunicación HTTPS.
-- **RNF8:** Cifrado de contraseñas con Bcrypt.
-- **RNF9:** Campos de auditoría en base de datos.
+- RNF5: Autenticación JWT y perfiles.
+- RNF6: HTTPS.
+- RNF7: Cifrado Bcrypt para contraseñas.
+- RNF8: Campos de auditoría en base de datos.
 
 **Usabilidad**
-- **RNF10:** Interfaces web simples e intuitivas.
+- RNF9: Interfaz UX/UI intuitiva.
 
 ---
 
-## Diagramas de Casos de Uso
-> Incluye diagramas que representan los casos de uso principales definidos en este documento.
+## Casos de Uso
+
+### Administrador
+
+#### CU001 – Registrar nuevo socio
+**Actor:** Administrador  
+**Descripción:** Permite dar de alta nuevos socios ingresando información personal.  
+**Flujo normal:**
+1. Presionar “Registrar socio”.
+2. Se muestra formulario con campos requeridos.
+
+#### CU008 – Consultar estado de pago
+**Actor:** Administrador  
+**Descripción:** Visualiza el estado de pago del socio.  
+**Flujo normal:**
+1. Presionar “Estado de pago”.
+2. Se muestra “Al día” si está pago, “Pendiente” si está antes del vencimiento o “No Pagado” si venció.
+
+#### CU009 – Publicar Actividad
+**Actor:** Administrador  
+**Descripción:** Permite dar de alta nuevas actividades.  
+**Flujo normal:**
+1. Presionar “Publicar actividad”.
+2. Formulario para tipo de actividad, monto, fecha/s, etc.
 
 ---
 
-## Notas de Diseño
-Esta sección queda como placeholder para avances futuros del proyecto.
+### Usuario
+
+#### CU014 – Inscribirse a actividad
+**Actor:** Usuario  
+**Descripción:** Muestra listado de servicios disponibles.  
+**Flujo normal:**
+1. Presionar “Contratar actividad”.
+2. Listado con valor, profesor/responsable y botón de inscripción.
+
+#### CU015 – Consultar valor de cuota
+**Actor:** Usuario  
+**Descripción:** Muestra detalle de la cuota (servicios, actividades, etc.).  
+**Flujo normal:**
+1. Presionar “Consultar valor de cuota”.
+2. Se visualiza el detalle.
 
 ---
+
+### Profesor
+
+#### CU017 – Consultar inscriptos a actividad
+**Actor:** Profesor  
+**Descripción:** Visualiza listado de inscriptos a una actividad.  
+**Flujo normal:**
+1. Seleccionar una actividad activa.
+2. Se listan socios inscriptos.
+
+---
+
+## Diagramas
+> Incluir diagramas de casos de uso según documento original.
