@@ -6,8 +6,8 @@ const Sidebar = ({ userRole, activeView, setActiveView, setUserRole }) => {
     admin: [
       { id: 'inicio', label: 'Inicio', icon: Home },
       { id: 'socios', label: 'Socios', icon: Users },
-      { id: 'profesores', label: 'Profesores', icon: User },
-      { id: 'clases', label: 'Gestión de Clases', icon: Calendar },
+      { id: 'staff', label: 'Staff', icon: User },
+      { id: 'clases', label: 'Actividades', icon: Calendar },
       { id: 'pagos', label: 'Pagos', icon: DollarSign },
       { id: 'reportes', label: 'Reportes', icon: FileText },
       { id: 'configuracion', label: 'Configuración', icon: Settings },
