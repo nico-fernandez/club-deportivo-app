@@ -1,11 +1,11 @@
 import React from 'react';
 
-const HomePanel = ({ userRole, myClasses, payments }) => {
-  const roleTitle = { admin: 'Administrador', profesor: 'Profesor', socio: 'Socio' };
+const HomePanel = ({ userRole, myClasses, payments, userName }) => {
+  const roleTitle = { admin: 'Administrador', profesor: 'Miembro del Staff', socio: 'Socio' };
   
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Bienvenido, {roleTitle[userRole]}</h2>
+      <h2 className="text-2xl font-bold mb-6">Bienvenido, {userName}</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {userRole === 'socio' && (
@@ -47,7 +47,7 @@ const HomePanel = ({ userRole, myClasses, payments }) => {
               <p className="text-2xl font-bold">$4,250</p>
             </div>
             <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-              <h3 className="font-semibold text-purple-700 mb-2">Profesores</h3>
+              <h3 className="font-semibold text-purple-700 mb-2">Miembros del Staff</h3>
               <p className="text-2xl font-bold">3</p>
             </div>
           </>

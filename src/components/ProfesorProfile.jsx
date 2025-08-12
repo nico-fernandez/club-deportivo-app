@@ -16,7 +16,7 @@ const ProfessorProfile = ({ profile, isEditing, setIsEditing, saveProfile, setPr
           </div>
           <div className="ml-4">
             <h3 className="text-xl font-semibold">{profile.name}</h3>
-            <p className="text-gray-600">Profesor</p>
+            <p className="text-gray-600">Miembro del Staff</p>
           </div>
         </div>
 

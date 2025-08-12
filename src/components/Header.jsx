@@ -6,7 +6,7 @@ const Header = ({ userRole, activeView }) => {
     <header className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
       <div className="flex items-center">
         <h2 className="text-lg font-semibold capitalize">
-          {activeView === 'inicio' ? 'Dashboard' : activeView === 'clases' ? 'Gestión de Clases' : activeView === 'misClases' ? 'Mis Clases' : activeView === 'pagos' ? 'Pagos de Cuota' : activeView === 'socios' ? 'Gestión de Socios' : activeView === 'profesores' ? 'Gestión de Profesores' : activeView === 'reportes' ? 'Reportes y Estadísticas' : 'Configuración del Sistema'}
+          {activeView === 'inicio' ? 'Dashboard' : activeView === 'clases' ? 'Gestión de Clases' : activeView === 'misClases' ? 'Mis Clases' : activeView === 'pagos' ? 'Pagos de Cuota' : activeView === 'socios' ? 'Gestión de Socios' : activeView === 'profesores' ? 'Gestión de Miembros del Staff' : activeView === 'reportes' ? 'Reportes y Estadísticas' : 'Configuración del Sistema'}
         </h2>
       </div>
       
@@ -17,7 +17,7 @@ const Header = ({ userRole, activeView }) => {
         </button>
         <div className="mr-2">
           <p className="font-medium">
-            {userRole === 'admin' ? 'Admin' : userRole === 'profesor' ? 'Prof. Martínez' : 'Juan Pérez'}
+            {userRole === 'admin' ? 'Admin' : userRole === 'profesor' ? 'Staff' : 'Juan Pérez'}
           </p>
         </div>
       </div>

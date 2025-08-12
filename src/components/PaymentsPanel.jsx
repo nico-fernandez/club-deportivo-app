@@ -601,8 +601,8 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
           <h3 className="text-lg font-semibold text-blue-800 mb-3">Información de Cuota</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-blue-600">Próximo Vencimiento</p>
-              <p className="font-medium text-blue-800">15 de Mayo 2025</p>
+              <p className="text-sm text-blue-600">Último Pago</p>
+              <p className="font-medium text-blue-800">1 de Abril 2025</p>
             </div>
             <div>
               <p className="text-sm text-blue-600">Estado Actual</p>

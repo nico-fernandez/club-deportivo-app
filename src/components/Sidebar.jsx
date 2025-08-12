@@ -12,12 +12,11 @@ const Sidebar = ({ userRole, activeView, setActiveView, setUserRole }) => {
       { id: 'reportes', label: 'Reportes', icon: FileText },
       { id: 'configuracion', label: 'Configuración', icon: Settings },
     ],
-    profesor: [
+    staff: [
       { id: 'inicio', label: 'Inicio', icon: Home },
-      { id: 'misClases', label: 'Mis Clases', icon: BookOpen },
-      { id: 'crearClase', label: 'Crear Clase', icon: Calendar },
-      { id: 'asistencia', label: 'Asistencia', icon: CheckSquare },
-      { id: 'horario', label: 'Mi Horario', icon: Clock },
+      { id: 'staffActivities', label: 'Mis Actividades', icon: Calendar },
+      { id: 'staffCompensation', label: 'Compensaciones', icon: DollarSign },
+      { id: 'perfil', label: 'Mi Perfil', icon: User },
     ],
     socio: [
       { id: 'inicio', label: 'Inicio', icon: Home },
@@ -37,11 +36,11 @@ const Sidebar = ({ userRole, activeView, setActiveView, setUserRole }) => {
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center">
           <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-            {userRole === 'admin' ? 'A' : userRole === 'profesor' ? 'P' : 'S'}
+            {userRole === 'admin' ? 'A' : userRole === 'staff' ? 'M' : 'S'}
           </div>
           <div className="ml-3">
             <p className="font-medium">
-              {userRole === 'admin' ? 'Admin' : userRole === 'profesor' ? 'Prof. Martínez' : 'Juan Pérez'}
+              {userRole === 'admin' ? 'Admin' : userRole === 'staff' ? 'Staff' : 'Juan Pérez'}
             </p>
             <p className="text-xs text-gray-500 capitalize">{userRole}</p>
           </div>
@@ -74,7 +73,7 @@ const Sidebar = ({ userRole, activeView, setActiveView, setUserRole }) => {
       <div className="p-4 border-t border-gray-200">
         <button
           onClick={() => {
-            setUserRole(userRole === 'admin' ? 'profesor' : userRole === 'profesor' ? 'socio' : 'admin');
+            setUserRole(userRole === 'admin' ? 'staff' : userRole === 'staff' ? 'socio' : 'admin');
             setActiveView('inicio');
           }}
           className="flex items-center w-full px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 mb-2"

@@ -238,7 +238,7 @@ const SportsDashboard = () => {
     const renderPanel = () => {
         switch (activeView) {
             case 'inicio':
-                return <HomePanel userRole={userRole} myClasses={myClasses} payments={payments} />;
+                                 return <HomePanel userRole={userRole} myClasses={myClasses} payments={payments} userName={userRole === 'admin' ? 'Administrador' : userRole === 'profesor' ? 'Staff' : 'Juan Pérez'} />;
             
             case 'clases':
                 if (userRole === 'socio') {
@@ -274,83 +274,19 @@ const SportsDashboard = () => {
             case 'socios':
                 if (userRole === 'admin') {
                     return (
-                        <div className="p-6">
-                            <h2 className="text-2xl font-bold mb-6">Gestión de Socios</h2>
-                            <div className="mb-6">
-                                <input
-                                    type="text"
-                                    placeholder="Buscar socio..."
-                                    className="px-4 py-2 border border-gray-300 rounded-lg w-64"
-                                />
-                                <button
-                                    onClick={() => {
-                                        setModalMode('create');
-                                        setNewMember({ name: '', email: '', phone: '' });
-                                        setShowMemberModal(true);
-                                    }}
-                                    className="ml-4 bg-blue-600 text-white py-2 px-4 rounded font-medium hover:bg-blue-700"
-                                >
-                                    + Nuevo Socio
-                                </button>
-                            </div>
-                            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Último Pago</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
-                                        {members.map((member) => (
-                                            <tr key={member.id}>
-                                                <td className="px-6 py-4 whitespace-nowrap font-medium">{member.name}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">{member.email}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`px-2 py-1 text-xs rounded-full ${member.status === 'Activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                                        }`}>
-                                                        {member.status}
-                                                    </span>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">{member.lastPayment}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <button
-                                                        onClick={() => handleViewMemberData(member)}
-                                                        className="text-blue-600 hover:text-blue-800 mr-3"
-                                                    >
-                                                        Ver Datos
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleViewMemberActivities(member)}
-                                                        className="text-green-600 hover:text-green-800 mr-3"
-                                                    >
-                                                        Actividades
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleEditMemberClick(member)}
-                                                        className="text-yellow-600 hover:text-yellow-800 mr-3"
-                                                    >
-                                                        Editar
-                                                    </button>
-                                                    {member.status === 'Activo' && (
-                                                        <button
-                                                            onClick={() => handleDeleteMember(member.id)}
-                                                            className="text-red-600 hover:text-red-800"
-                                                        >
-                                                            Dar de Baja
-                                                        </button>
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            {selectedSocio && <AdminSocioHistory socio={selectedSocio} onClose={() => setSelectedSocio(null)} />}
-                        </div>
+                        <MembersPanel 
+                            members={members}
+                            onViewMemberData={handleViewMemberData}
+                            onViewMemberActivities={handleViewMemberActivities}
+                            onEditMember={handleEditMemberClick}
+                            onDeleteMember={handleDeleteMember}
+                            onCreateMember={() => {
+                                setModalMode('create');
+                                setNewMember({ name: '', email: '', phone: '' });
+                                setShowMemberModal(true);
+                            }}
+                            showCreateButton={true}
+                        />
                     );
                 }
                 return <MembersPanel members={members} />;
@@ -382,10 +318,6 @@ const SportsDashboard = () => {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Hora</label>
                                     <input type="time" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50" disabled />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Capacidad</label>
-                                    <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50" disabled />
                                 </div>
                             </form>
                         </div>
@@ -481,7 +413,7 @@ const SportsDashboard = () => {
                 return <StaffActivityList myClasses={myClasses} />;
             
             case 'staffCompensation':
-                return <StaffCompensation myClasses={myClasses} />;
+                return <StaffCompensation myClasses={myClasses} compensations={compensations} />;
             
             default:
                 return <div className="p-6"><h2 className="text-xl font-semibold">Contenido en desarrollo</h2></div>;

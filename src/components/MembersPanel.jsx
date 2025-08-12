@@ -1,10 +1,32 @@
 import React, { useState } from 'react';
 
-const MembersPanel = ({ members, deleteMember, setShowMemberModal }) => {
+const MembersPanel = ({ 
+  members, 
+  onViewMemberData, 
+  onViewMemberActivities, 
+  onEditMember, 
+  onDeleteMember, 
+  onCreateMember,
+  showCreateButton = false,
+  deleteMember, // Para mantener compatibilidad
+  setShowMemberModal // Para mantener compatibilidad
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleCreateMember = () => {
-    setShowMemberModal(true);
+    if (onCreateMember) {
+      onCreateMember();
+    } else if (setShowMemberModal) {
+      setShowMemberModal(true);
+    }
+  };
+
+  const handleDeleteMember = (memberId) => {
+    if (onDeleteMember) {
+      onDeleteMember(memberId);
+    } else if (deleteMember) {
+      deleteMember(memberId);
+    }
   };
 
   const filteredMembers = members.filter(member =>
@@ -15,22 +37,24 @@ const MembersPanel = ({ members, deleteMember, setShowMemberModal }) => {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Gestión de Miembros</h2>
+        <h2 className="text-2xl font-bold">Gestión de Socios</h2>
         <div className="flex items-center gap-4">
           <input 
             type="text"
-            placeholder="Buscar miembro..."
+            placeholder="Buscar socio..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg w-64"
           />
-          <button
-            onClick={handleCreateMember}
-            className="bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 flex items-center"
-          >
-            <span className="mr-2">+</span>
-            Registrar Miembro
-          </button>
+          {(showCreateButton || setShowMemberModal) && (
+            <button
+              onClick={handleCreateMember}
+              className="bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 flex items-center"
+            >
+              <span className="mr-2">+</span>
+              {showCreateButton ? 'Nuevo Socio' : 'Registrar Miembro'}
+            </button>
+          )}
         </div>
       </div>
       
@@ -60,13 +84,49 @@ const MembersPanel = ({ members, deleteMember, setShowMemberModal }) => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{member.lastPayment || 'N/A'}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <button className="text-blue-600 hover:text-blue-800 mr-3">Editar</button>
-                    <button 
-                      onClick={() => deleteMember(member.id)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      Eliminar
-                    </button>
+                    {onViewMemberData && (
+                      <button 
+                        onClick={() => onViewMemberData(member)}
+                        className="text-blue-600 hover:text-blue-800 mr-3"
+                      >
+                        Ver Datos
+                      </button>
+                    )}
+                    {onViewMemberActivities && (
+                      <button 
+                        onClick={() => onViewMemberActivities(member)}
+                        className="text-green-600 hover:text-green-800 mr-3"
+                      >
+                        Actividades
+                      </button>
+                    )}
+                    {onEditMember && (
+                      <button 
+                        onClick={() => onEditMember(member)}
+                        className="text-yellow-600 hover:text-yellow-800 mr-3"
+                      >
+                        Editar
+                      </button>
+                    )}
+                    {!onEditMember && (
+                      <button className="text-blue-600 hover:text-blue-800 mr-3">Editar</button>
+                    )}
+                    {member.status === 'Activo' && onDeleteMember && (
+                      <button
+                        onClick={() => handleDeleteMember(member.id)}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        Dar de Baja
+                      </button>
+                    )}
+                    {(!onDeleteMember || member.status !== 'Activo') && (
+                      <button 
+                        onClick={() => handleDeleteMember(member.id)}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        Eliminar
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))

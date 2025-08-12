@@ -119,21 +119,6 @@ const ActivityModal = ({ isOpen, onClose, activity = null, mode = 'create', onSa
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Capacidad Máxima *
-              </label>
-              <input
-                type="number"
-                required
-                min="1"
-                value={formData.capacity}
-                onChange={(e) => setFormData({...formData, capacity: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Número de participantes"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Cargo por Inscripción
               </label>
               <input
