@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PaymentModal from './PaymentModal';
 
-const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile, userRole, currentUserId }) => {
+const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile, userRole, currentUserId, members = [], classes = [] }) => {
   const [filterStatus, setFilterStatus] = useState('todos');
   const [filterMonth, setFilterMonth] = useState('todos');
   const [filterMethod, setFilterMethod] = useState('todos');
@@ -10,6 +11,7 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
   const [showCharts, setShowCharts] = useState(false);
   const [showPaymentDetailModal, setShowPaymentDetailModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const months = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -17,7 +19,7 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
   ];
 
   const paymentMethods = [
-    'Presencial', 'Transferencia', 'Comprobante', 'Efectivo', 'Tarjeta'
+    'efectivo', 'transferencia'
   ];
 
   // Filtrar pagos según el rol del usuario
@@ -54,17 +56,16 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
     .filter(p => p.status === 'Atrasado')
     .reduce((sum, p) => sum + parseFloat(p.amount.replace('$', '')), 0);
 
-  // Métricas por método de pago
-  const paymentsByMethod = paymentMethods.reduce((acc, method) => {
-    acc[method] = roleFilteredPayments.filter(p => p.method === method).length;
-    return acc;
-  }, {});
+
 
   // Métricas por mes
   const paymentsByMonth = months.reduce((acc, month, index) => {
     acc[month] = roleFilteredPayments.filter(p => {
-      const paymentDate = new Date(p.date);
-      return paymentDate.getMonth() === index;
+      if (p.date && p.date !== '-') {
+        const paymentDate = new Date(p.date);
+        return paymentDate.getMonth() === index;
+      }
+      return false;
     }).length;
     return acc;
   }, {});
@@ -73,14 +74,19 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
   const getFilteredPayments = () => {
     let filtered = roleFilteredPayments.filter(payment => {
       const matchesStatus = filterStatus === 'todos' || payment.status === filterStatus;
-      const matchesMethod = filterMethod === 'todos' || payment.method === filterMethod;
-      const matchesSearch = payment.memberName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           payment.activity.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesMethod = filterMethod === 'todos' || payment.paymentMethod === filterMethod;
+              const matchesSearch = payment.memberName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                             (payment.activity && payment.activity.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                             payment.month.toLowerCase().includes(searchTerm.toLowerCase());
       
       let matchesMonth = true;
       if (filterMonth !== 'todos') {
-        const paymentDate = new Date(payment.date);
-        matchesMonth = paymentDate.getMonth() === parseInt(filterMonth);
+        if (payment.date && payment.date !== '-') {
+          const paymentDate = new Date(payment.date);
+          matchesMonth = paymentDate.getMonth() === parseInt(filterMonth);
+        } else {
+          matchesMonth = false;
+        }
       }
       
       return matchesStatus && matchesMethod && matchesSearch && matchesMonth;
@@ -92,12 +98,12 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
       
       switch (sortBy) {
         case 'date':
-          aValue = new Date(a.date);
-          bValue = new Date(b.date);
+          aValue = a.date === '-' ? new Date(0) : new Date(a.date);
+          bValue = b.date === '-' ? new Date(0) : new Date(b.date);
           break;
         case 'amount':
-          aValue = parseFloat(a.amount.replace('$', ''));
-          bValue = parseFloat(b.amount.replace('$', ''));
+          aValue = parseFloat(a.amount.replace('$', '')) || 0;
+          bValue = parseFloat(b.amount.replace('$', '')) || 0;
           break;
         case 'memberName':
           aValue = a.memberName.toLowerCase();
@@ -127,11 +133,6 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
     atrasado: totalPayments > 0 ? (overduePayments / totalPayments) * 100 : 0
   };
 
-  const methodPercentage = Object.keys(paymentsByMethod).reduce((acc, method) => {
-    acc[method] = totalPayments > 0 ? (paymentsByMethod[method] / totalPayments) * 100 : 0;
-    return acc;
-  }, {});
-
   // Título según el rol
   const getPanelTitle = () => {
     switch (userRole) {
@@ -156,9 +157,33 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
     setShowPaymentDetailModal(true);
   };
 
+  // Función para manejar la creación de pagos
+  const handleCreatePayment = (paymentData, mode) => {
+    if (mode === 'create') {
+      // Aquí se agregaría la lógica para crear el pago
+      console.log('Crear pago:', paymentData);
+      setShowPaymentModal(false);
+    } else if (mode === 'edit') {
+      // Aquí se agregaría la lógica para editar el pago
+      console.log('Editar pago:', paymentData);
+      setShowPaymentModal(false);
+    }
+  };
+
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">{getPanelTitle()}</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">{getPanelTitle()}</h2>
+        {shouldShowAdminControls && (
+          <button
+            onClick={() => setShowPaymentModal(true)}
+            className="bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 flex items-center"
+          >
+            <span className="mr-2">+</span>
+            Registrar Pago
+          </button>
+        )}
+      </div>
       
       {/* Métricas Principales - Simplificadas para socio */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -258,7 +283,9 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
               >
                 <option value="todos">Todos los Métodos</option>
                 {paymentMethods.map(method => (
-                  <option key={method} value={method}>{method}</option>
+                  <option key={method} value={method}>
+                    {method.charAt(0).toUpperCase() + method.slice(1)}
+                  </option>
                 ))}
               </select>
             </div>
@@ -383,31 +410,7 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
             </div>
           </div>
 
-          {/* Gráfico de Métodos de Pago - Solo para admin */}
-          {userRole === 'admin' && (
-            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-              <h3 className="text-lg font-semibold mb-4">Métodos de Pago</h3>
-              <div className="space-y-3">
-                {Object.entries(methodPercentage).map(([method, percentage]) => (
-                  <div key={method} className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
-                      <span className="text-sm text-gray-700">{method}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-32 bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-500 h-2 rounded-full" 
-                          style={{ width: `${percentage}%` }}
-                        ></div>
-                      </div>
-                      <span className="text-sm font-medium text-gray-900">{percentage.toFixed(1)}%</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+
         </div>
       )}
 
@@ -440,7 +443,9 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Método</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                  {userRole !== 'socio' && (
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                  )}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -453,20 +458,19 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
                     </td>
                   )}
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{payment.activity}</div>
-                    <div className="text-sm text-gray-500">{payment.activityType}</div>
+                    <div className="text-sm text-gray-900">{payment.activity || payment.month}</div>
+                    <div className="text-sm text-gray-500">{payment.notes}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-bold text-gray-900">{payment.amount}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      payment.method === 'Presencial' ? 'bg-blue-100 text-blue-800' :
-                      payment.method === 'Transferencia' ? 'bg-green-100 text-green-800' :
-                      payment.method === 'Comprobante' ? 'bg-yellow-100 text-yellow-800' :
+                      payment.paymentMethod === 'efectivo' ? 'bg-blue-100 text-blue-800' :
+                      payment.paymentMethod === 'transferencia' ? 'bg-green-100 text-green-800' :
                       'bg-gray-100 text-gray-800'
                     }`}>
-                      {payment.method}
+                      {payment.paymentMethod ? payment.paymentMethod.charAt(0).toUpperCase() + payment.paymentMethod.slice(1) : '-'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -481,22 +485,17 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
                       {payment.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    {userRole === 'socio' ? (
-                      <button 
-                        onClick={() => handleOpenPaymentDetail(payment)}
-                        className="text-blue-600 hover:text-blue-900 font-medium"
-                      >
-                        Ver Detalle
-                      </button>
-                    ) : shouldShowAdminControls ? (
-                      <>
-                        <button className="text-blue-600 hover:text-blue-900 mr-3">Ver</button>
-                        <button className="text-green-600 hover:text-green-900 mr-3">Aprobar</button>
-                        <button className="text-red-600 hover:text-red-900">Rechazar</button>
-                      </>
-                    ) : null}
-                  </td>
+                  {userRole !== 'socio' && (
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      {shouldShowAdminControls ? (
+                        <>
+                          <button className="text-blue-600 hover:text-blue-900 mr-3">Ver</button>
+                          <button className="text-green-600 hover:text-green-900 mr-3">Aprobar</button>
+                          <button className="text-red-600 hover:text-red-900">Rechazar</button>
+                        </>
+                      ) : null}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -700,6 +699,19 @@ const PaymentsPanel = ({ payments, handleFileUpload, submitPayment, paymentFile,
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modal de Registro de Pagos para Administradores */}
+      {showPaymentModal && (
+        <PaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          members={members}
+          classes={classes}
+          onSave={handleCreatePayment}
+          payment={null}
+          mode="create"
+        />
       )}
     </div>
   );

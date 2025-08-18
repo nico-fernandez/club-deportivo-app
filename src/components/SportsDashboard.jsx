@@ -8,7 +8,7 @@ import MyClassesPanel from './MyClasesPanel';
 import PaymentsPanel from './PaymentsPanel';
 import MembersPanel from './MembersPanel';
 import InstructorsPanel from './InstructorsPanel';
-import ReportsPanel from './ReportsPanel';
+
 import ConfigPanel from './ConfigPanel';
 import MemberModal from './MemberModal';
 import ProfessorProfile from './ProfesorProfile';
@@ -17,29 +17,37 @@ import StaffActivityList from './StaffActivityList';
 import AdminActivityManagement from './AdminActivityManagement';
 import ActivityModal from './ActivityModal';
 import PaymentModal from './PaymentModal';
+import EnrollmentModal from './EnrollmentModal';
 import StaffCompensation from './StaffCompensation';
 import StaffManagement from './StaffManagement';
+import ProfilePanel from './ProfilePanel';
 
 const SportsDashboard = () => {
     const [userRole, setUserRole] = useState('admin'); // Cambio por defecto a admin
     const [activeView, setActiveView] = useState('inicio');
     const [notification, setNotification] = useState(null);
     const [classes, setClasses] = useState([
-        { id: 1, title: 'Yoga', instructor: 'Ana García', date: '2025-05-02', time: '10:00', capacity: 15, enrolled: 8, description: 'Clase de yoga para principiantes', enrollmentFee: '$30', staffMember: 'Ana García' },
-        { id: 2, title: 'Natación', instructor: 'Carlos Mendoza', date: '2025-05-03', time: '16:00', capacity: 10, enrolled: 10, description: 'Clase de natación técnica', enrollmentFee: '$50', staffMember: 'Carlos Mendoza' },
-        { id: 3, title: 'Tenis', instructor: 'Laura Pérez', date: '2025-05-04', time: '09:00', capacity: 8, enrolled: 5, description: 'Clase de tenis intermedio', enrollmentFee: '$40', staffMember: 'Laura Pérez' },
-        { id: 4, title: 'Fútbol', instructor: 'Roberto Suárez', date: '2025-05-05', time: '18:00', capacity: 22, enrolled: 18, description: 'Entrenamiento de fútbol', enrollmentFee: '$35', staffMember: 'Roberto Suárez' }
+        { id: 1, title: 'Yoga', instructor: 'Ana García', date: '2025-07-15', time: '10:00', capacity: 15, enrolled: 8, description: 'Clase de yoga para principiantes', enrollmentFee: '$25', staffMember: 'Ana García' },
+        { id: 2, title: 'Natación', instructor: 'Carlos Mendoza', date: '2025-07-20', time: '16:00', capacity: 10, enrolled: 10, description: 'Clase de natación técnica', enrollmentFee: '$30', staffMember: 'Carlos Mendoza' },
+        { id: 3, title: 'Tenis', instructor: 'Laura Pérez', date: '2025-08-05', time: '09:00', capacity: 8, enrolled: 5, description: 'Clase de tenis intermedio', enrollmentFee: '$40', staffMember: 'Laura Pérez' },
+        { id: 4, title: 'Fútbol', instructor: 'Roberto Suárez', date: '2025-08-12', time: '18:00', capacity: 22, enrolled: 18, description: 'Entrenamiento de fútbol', enrollmentFee: '$35', staffMember: 'Roberto Suárez' },
+        { id: 5, title: 'Pilates', instructor: 'María López', date: '2025-07-25', time: '14:00', capacity: 12, enrolled: 6, description: 'Clase de pilates para todos los niveles', enrollmentFee: '$20', staffMember: 'María López' },
+        { id: 6, title: 'Zumba', instructor: 'Ana García', date: '2025-08-18', time: '19:00', capacity: 20, enrolled: 15, description: 'Clase de zumba energética', enrollmentFee: '$15', staffMember: 'Ana García' }
     ]);
-    const [myClasses, setMyClasses] = useState([{ id: 2, title: 'Natación', instructor: 'Carlos Mendoza', date: '2025-05-03', time: '16:00' }]);
+    const [myClasses, setMyClasses] = useState([
+        { id: 2, title: 'Natación', instructor: 'Carlos Mendoza', date: '2025-07-20', time: '16:00', enrollmentFee: '$30', description: 'Clase de natación técnica' },
+        { id: 1, title: 'Yoga', instructor: 'Ana García', date: '2025-07-15', time: '10:00', enrollmentFee: '$25', description: 'Clase de yoga para principiantes' }
+    ]);
     const [payments, setPayments] = useState([
-        { id: 1, memberId: 1, memberName: 'Juan Pérez', month: 'Marzo 2025', status: 'Pagado', amount: '$50', date: '2025-03-01', paymentMethod: 'efectivo', notes: '' },
-        { id: 2, memberId: 2, memberName: 'María García', month: 'Abril 2025', status: 'Pagado', amount: '$50', date: '2025-04-01', paymentMethod: 'tarjeta', notes: '' },
-        { id: 3, memberId: 3, memberName: 'Carlos López', month: 'Mayo 2025', status: 'Pendiente', amount: '$50', date: '-', paymentMethod: '', notes: '' },
-        { id: 4, memberId: 1, memberName: 'Juan Pérez', month: 'Abril 2025', status: 'Pagado', amount: '$50', date: '2025-04-01', paymentMethod: 'transferencia', notes: '' },
-        { id: 5, memberId: 2, memberName: 'María García', month: 'Mayo 2025', status: 'Pendiente', amount: '$50', date: '-', paymentMethod: '', notes: '' }
+        { id: 1, memberId: 1, memberName: 'Juan Pérez', month: 'Marzo 2025', status: 'Pagado', amount: '$50', date: '2025-03-01', paymentMethod: 'efectivo', notes: 'Cuota mensual', activity: 'Cuota mensual' },
+        { id: 3, memberId: 3, memberName: 'Carlos López', month: 'Mayo 2025', status: 'Pendiente', amount: '$50', date: '-', paymentMethod: '', notes: 'Cuota mensual', activity: 'Cuota mensual' },
+        { id: 4, memberId: 1, memberName: 'Juan Pérez', month: 'Abril 2025', status: 'Pagado', amount: '$50', date: '2025-04-01', paymentMethod: 'transferencia', notes: 'Cuota mensual', activity: 'Cuota mensual' },
+        { id: 5, memberId: 2, memberName: 'María García', month: 'Mayo 2025', status: 'Pendiente', amount: '$50', date: '-', paymentMethod: '', notes: 'Cuota mensual', activity: 'Cuota mensual' },
+        { id: 6, memberId: 1, memberName: 'Juan Pérez', month: 'Julio 2025', status: 'Pagado', amount: '$80', date: '2025-07-01', paymentMethod: 'efectivo', notes: 'Cuota mensual + Natación', activity: 'Cuota + Actividad' },
+        { id: 7, memberId: 1, memberName: 'Juan Pérez', month: 'Agosto 2025', status: 'Pagado', amount: '$75', date: '2025-08-01', paymentMethod: 'transferencia', notes: 'Cuota mensual + Yoga', activity: 'Cuota + Actividad' }
     ]);
     const [members, setMembers] = useState([
-        { id: 1, name: 'Juan Pérez', email: 'juan@email.com', phone: '+1234567890', status: 'Activo', lastPayment: '2025-04-01', activities: ['Natación', 'Yoga'] },
+        { id: 1, name: 'Juan Pérez', email: 'juan@email.com', phone: '+1234567890', status: 'Activo', lastPayment: '2025-08-10', activities: ['Natación', 'Yoga'] },
         { id: 2, name: 'María García', email: 'maria@email.com', phone: '+1234567891', status: 'Activo', lastPayment: '2025-04-01', activities: ['Tenis'] },
         { id: 3, name: 'Carlos López', email: 'carlos@email.com', phone: '+1234567892', status: 'Inactivo', lastPayment: '2025-02-01', activities: [] }
     ]);
@@ -70,6 +78,7 @@ const SportsDashboard = () => {
     const [showMemberDataModal, setShowMemberDataModal] = useState(false);
     const [showMemberActivitiesModal, setShowMemberActivitiesModal] = useState(false);
     const [showActivityModal, setShowActivityModal] = useState(false);
+    const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
     const [modalMode, setModalMode] = useState('create'); // 'create', 'edit', 'view'
     
     const [newMember, setNewMember] = useState({ name: '', email: '', phone: '' });
@@ -77,10 +86,22 @@ const SportsDashboard = () => {
     const [selectedMember, setSelectedMember] = useState(null);
     const [selectedPayment, setSelectedPayment] = useState(null);
     const [selectedActivity, setSelectedActivity] = useState(null);
+    const [selectedEnrollment, setSelectedEnrollment] = useState(null);
     
     const [professorProfile, setProfessorProfile] = useState(instructors.find(i => i.name === 'Prof. Martínez') || { name: 'Prof. Martínez', specialty: '', email: '', experience: '', status: 'Activo' });
     const [isEditing, setIsEditing] = useState(false);
     const [selectedSocio, setSelectedSocio] = useState(null);
+    const [userProfile, setUserProfile] = useState({
+      name: 'Juan Pérez',
+      email: 'juan@email.com',
+      phone: '+1234567890',
+      dni: '12345678',
+      address: 'Calle Principal 123, Ciudad',
+      emergencyContact: 'María Pérez',
+      emergencyPhone: '+1234567891',
+      medicalInfo: 'Ninguna condición médica conocida',
+      preferences: 'Actividades de cardio y fuerza, horarios matutinos'
+    });
 
     // Funciones para gestión de socios
     const handleCreateMember = () => {
@@ -231,6 +252,35 @@ const SportsDashboard = () => {
         setNotification({ type: 'success', message: 'Socio dado de baja de la actividad exitosamente' });
     };
 
+    // Función para actualizar el perfil del socio
+    const handleUpdateProfile = (updatedProfile) => {
+        setUserProfile(updatedProfile);
+        setNotification({ type: 'success', message: 'Perfil actualizado exitosamente' });
+    };
+
+    // Función para cancelar inscripciones
+    const handleEnrollmentCancellation = (enrollmentId) => {
+        // Remover de myClasses
+        const updatedMyClasses = myClasses.filter(cls => cls.id !== enrollmentId);
+        setMyClasses(updatedMyClasses);
+        
+        // Actualizar contador de inscritos en la clase principal
+        const updatedClasses = classes.map(cls => 
+            cls.id === enrollmentId 
+                ? { ...cls, enrolled: Math.max(0, (cls.enrolled || 0) - 1) }
+                : cls
+        );
+        setClasses(updatedClasses);
+        
+        setNotification({ type: 'success', message: 'Inscripción cancelada exitosamente' });
+    };
+
+    // Función para abrir modal de cancelación
+    const handleOpenCancelModal = (enrollment) => {
+        setSelectedEnrollment(enrollment);
+        setShowEnrollmentModal(true);
+    };
+
     const clearNotification = () => {
         setNotification(null);
     };
@@ -242,13 +292,20 @@ const SportsDashboard = () => {
             
             case 'clases':
                 if (userRole === 'socio') {
-                    return <ClassesPanel classes={classes} myClasses={myClasses} />;
+                    return <ClassesPanel 
+                        classes={classes} 
+                        myClasses={myClasses} 
+                        onCancelEnrollment={handleOpenCancelModal}
+                    />;
                 } else {
                     return <AdminActivityManagement classes={classes} onActivitySave={handleActivitySave} />;
                 }
             
             case 'misClases':
-                return <MyClassesPanel classes={myClasses} />;
+                return <MyClassesPanel 
+                    classes={myClasses} 
+                    onCancelEnrollment={handleOpenCancelModal}
+                />;
             
             case 'pagos':
                 return (
@@ -257,6 +314,8 @@ const SportsDashboard = () => {
                         paymentFile={paymentFile}
                         userRole={userRole}
                         currentUserId={userRole === 'socio' ? 1 : userRole === 'staff' ? 1 : null}
+                        members={members}
+                        classes={classes}
                     />
                 );
             
@@ -291,8 +350,7 @@ const SportsDashboard = () => {
                 }
                 return <MembersPanel members={members} />;
             
-            case 'reportes':
-                return <ReportsPanel members={members} classes={classes} />;
+
             
             case 'configuracion':
                 return <ConfigPanel />;
@@ -376,36 +434,7 @@ const SportsDashboard = () => {
                 if (userRole === 'profesor') {
                     return <ProfessorProfile profile={professorProfile} isEditing={isEditing} setIsEditing={setIsEditing} />;
                 } else if (userRole === 'socio') {
-                    return (
-                        <div className="p-6">
-                            <h2 className="text-2xl font-bold mb-6">Mi Perfil</h2>
-                            <div className="bg-white rounded-lg border border-gray-200 p-6 max-w-2xl mx-auto">
-                                <div className="flex items-center mb-6">
-                                    <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-2xl">
-                                        S
-                                    </div>
-                                    <div className="ml-4">
-                                        <h3 className="text-xl font-semibold">Juan Pérez</h3>
-                                        <p className="text-gray-600">Socio</p>
-                                    </div>
-                                </div>
-                                <div className="space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
-                                        <input type="text" value="Juan Pérez" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50" disabled />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                                        <input type="email" value="juan@email.com" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50" disabled />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
-                                        <input type="tel" value="+1234567890" className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50" disabled />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    );
+                    return <ProfilePanel userProfile={userProfile} onUpdateProfile={handleUpdateProfile} />;
                 }
                 return <div className="p-6"><h2 className="text-xl font-semibold">Contenido en desarrollo</h2></div>;
             
@@ -457,6 +486,7 @@ const SportsDashboard = () => {
                     isOpen={showPaymentModal}
                     onClose={() => setShowPaymentModal(false)}
                     members={members}
+                    classes={classes}
                     onSave={handleCreatePayment}
                     payment={selectedPayment}
                     mode={selectedPayment ? 'edit' : 'create'}
@@ -540,6 +570,16 @@ const SportsDashboard = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Modal de Cancelación de Inscripciones */}
+            {showEnrollmentModal && selectedEnrollment && (
+                <EnrollmentModal
+                    isOpen={showEnrollmentModal}
+                    onClose={() => setShowEnrollmentModal(false)}
+                    enrollment={selectedEnrollment}
+                    onCancel={handleEnrollmentCancellation}
+                />
             )}
         </div>
     );

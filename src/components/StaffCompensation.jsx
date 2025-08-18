@@ -164,14 +164,7 @@ const StaffCompensation = ({ myClasses, compensations = [] }) => {
             </div>
           )}
 
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => setShowDetails(!showDetails)}
-              className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
-            >
-              {showDetails ? 'Ocultar Detalles' : 'Ver Detalles'}
-            </button>
-          </div>
+          
         </div>
 
         {/* Resumen del Período */}

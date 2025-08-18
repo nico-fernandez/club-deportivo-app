@@ -83,7 +83,7 @@ const MembersPanel = ({
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{member.lastPayment || 'N/A'}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     {onViewMemberData && (
                       <button 
                         onClick={() => onViewMemberData(member)}

@@ -4,22 +4,17 @@ import { Home, Users, User, Calendar, DollarSign, FileText, Settings, BookOpen, 
 const Sidebar = ({ userRole, activeView, setActiveView, setUserRole }) => {
   const menuItems = {
     admin: [
-      { id: 'inicio', label: 'Inicio', icon: Home },
       { id: 'socios', label: 'Socios', icon: Users },
       { id: 'staff', label: 'Staff', icon: User },
       { id: 'clases', label: 'Actividades', icon: Calendar },
       { id: 'pagos', label: 'Pagos', icon: DollarSign },
-      { id: 'reportes', label: 'Reportes', icon: FileText },
       { id: 'configuracion', label: 'Configuración', icon: Settings },
     ],
     staff: [
-      { id: 'inicio', label: 'Inicio', icon: Home },
       { id: 'staffActivities', label: 'Mis Actividades', icon: Calendar },
       { id: 'staffCompensation', label: 'Compensaciones', icon: DollarSign },
-      { id: 'perfil', label: 'Mi Perfil', icon: User },
     ],
     socio: [
-      { id: 'inicio', label: 'Inicio', icon: Home },
       { id: 'clases', label: 'Clases Disponibles', icon: Calendar },
       { id: 'misClases', label: 'Mis Clases', icon: BookOpen },
       { id: 'pagos', label: 'Pagos de Cuota', icon: DollarSign },
@@ -73,8 +68,16 @@ const Sidebar = ({ userRole, activeView, setActiveView, setUserRole }) => {
       <div className="p-4 border-t border-gray-200">
         <button
           onClick={() => {
-            setUserRole(userRole === 'admin' ? 'staff' : userRole === 'staff' ? 'socio' : 'admin');
-            setActiveView('inicio');
+            const newRole = userRole === 'admin' ? 'staff' : userRole === 'staff' ? 'socio' : 'admin';
+            setUserRole(newRole);
+            // Cambiar a la vista apropiada según el rol
+            if (newRole === 'staff') {
+              setActiveView('staffActivities');
+            } else if (newRole === 'socio') {
+              setActiveView('clases');
+            } else {
+              setActiveView('socios');
+            }
           }}
           className="flex items-center w-full px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 mb-2"
         >
