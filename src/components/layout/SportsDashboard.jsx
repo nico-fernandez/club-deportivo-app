@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import Notification from './Notification';
-import HomePanel from './HomePanel';
-import ClassesPanel from './ClasesPanel';
-import MyClassesPanel from './MyClasesPanel';
-import PaymentsPanel from './PaymentsPanel';
-import MembersPanel from './MembersPanel';
-import InstructorsPanel from './InstructorsPanel';
+import Notification from '../common/Notification';
+import HomePanel from '../dashboard/HomePanel';
+import ClassesPanel from '../activities/ClasesPanel';
+import MyClassesPanel from '../activities/MyClasesPanel';
+import PaymentsPanel from '../payments/PaymentsPanel';
+import MembersPanel from '../members/MembersPanel';
+import InstructorsPanel from '../staff/InstructorsPanel';
 
-import ConfigPanel from './ConfigPanel';
-import MemberModal from './MemberModal';
-import ProfessorProfile from './ProfesorProfile';
-import AdminSocioHistory from './AdminSocioHistory';
-import StaffActivityList from './StaffActivityList';
-import AdminActivityManagement from './AdminActivityManagement';
-import ActivityModal from './ActivityModal';
-import PaymentModal from './PaymentModal';
-import EnrollmentModal from './EnrollmentModal';
-import StaffCompensation from './StaffCompensation';
-import StaffManagement from './StaffManagement';
-import ProfilePanel from './ProfilePanel';
+import ConfigPanel from '../settings/ConfigPanel';
+import MemberModal from '../members/MemberModal';
+import ProfessorProfile from '../staff/ProfesorProfile';
+import AdminSocioHistory from '../members/AdminSocioHistory';
+import StaffActivityList from '../staff/StaffActivityList';
+import AdminActivityManagement from '../activities/AdminActivityManagement';
+import ActivityModal from '../activities/ActivityModal';
+import PaymentModal from '../payments/PaymentModal';
+import EnrollmentModal from '../activities/EnrollmentModal';
+import StaffCompensation from '../staff/StaffCompensation';
+import StaffManagement from '../staff/StaffManagement';
+import ProfilePanel from '../members/ProfilePanel';
 
 const SportsDashboard = () => {
     const [userRole, setUserRole] = useState('admin'); // Cambio por defecto a admin

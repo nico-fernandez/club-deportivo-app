@@ -1,4 +1,4 @@
-import SportsDashboard from './components/SportsDashboard'
+import SportsDashboard from './components/layout/SportsDashboard'
 import './App.css'
 
 function App() {
